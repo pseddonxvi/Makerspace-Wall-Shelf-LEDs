@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Epic shelves of Doom!</title>
+</head>
+<style>body {
+    background-image: url("https://4kwallpapers.com/images/wallpapers/samsung-galaxy-tab-s7-orange-blue-light-stock-1920x1200-2280.jpg");
+  }</style>
+<body>
+    <input type="button" id = "led1ON" value="LED ON">
+    <input type="button" id="led1OFF" value="LED OFF">
+<p></p>
+    <input type="button" id = "led2ON" value="LED ON">
+    <input type="button" id="led2OFF" value="LED OFF">
+<p></p>
+    <input type="button" id = "led3ON" value="LED ON" style="color: ;">
+    <input type="button" id="led3OFF" value="LED OFF">
+
+</body>
+
+<script>
+    function sendRequest(target, action, value="") {
+        console.log("making request")
+        let xR = new XMLHttpRequest();
+        xR.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                
+                console.log("Server Response:", this.responseText);
+                data = JSON.parse(this.responseText);
+                
+                //Handle responses
+                if (data["item"] == "onboardLED") {
+                    ledStatus.innerText = data["status"];
+                }
+            }
+        }
+        let data = {};
+        data["action"] = action;
+        data["value"] = value;
+        console.log("data:", data);
+        xR.open("POST", target, true);
+        xR.send(JSON.stringify(data));
+    }
+
+    led1ON.addEventListener("click", function(){
+        sendRequest("/", "light1ON");
+    })
+    led1OFF.addEventListener("click", function () {
+        sendRequest("/", "light1OFF");
+    })
+
+    led2ON.addEventListener("click", function(){
+        sendRequest("/", "light2ON");
+    })
+    led2OFF.addEventListener("click", function () {
+        sendRequest("/", "light2OFF");
+    })
+
+    led3ON.addEventListener("click", function(){
+        sendRequest("/", "light3ON");
+    })
+    led3OFF.addEventListener("click", function () {
+        sendRequest("/", "light3OFF");
+    })
+
+
+
+</script>
+
+</html>
